@@ -1,0 +1,28 @@
+version: "3"
+
+vars:
+  BACKEND_DOCKER_FILE: ./build/local/Dockerfile
+  BACKEND_DOCKER_IMAGE: web-projects-backend
+  BACKEND_DOCKER_CONTAINER: web-projects-backend-container
+
+tasks:
+  build:
+    cmds:
+      - docker build -t {{.BACKEND_DOCKER_IMAGE}} -f {{.BACKEND_DOCKER_FILE}} .
+
+  run:
+    cmds:
+      - docker run -d -p 8082:80 --name {{.BACKEND_DOCKER_CONTAINER}} {{.BACKEND_DOCKER_IMAGE}}
+
+  stop:
+    cmds:
+      - docker stop {{.BACKEND_DOCKER_CONTAINER}}
+
+  down:
+    cmds:
+      - docker stop {{.BACKEND_DOCKER_CONTAINER}}
+      - docker rm {{.BACKEND_DOCKER_CONTAINER}}
+
+  logs:
+    cmds:
+      - docker logs -f {{.BACKEND_DOCKER_CONTAINER}}
