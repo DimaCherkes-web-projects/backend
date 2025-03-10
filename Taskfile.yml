@@ -1,28 +1,39 @@
 version: "3"
 
 vars:
-  BACKEND_DOCKER_FILE: ./build/local/Dockerfile
+  BACKEND_DEV_DOCKER_FILE: ./build/local/Dockerfile
+  BACKEND_PROD_DOCKER_FILE: ./build/prod/Dockerfile
   BACKEND_DOCKER_IMAGE: web-projects-backend
   BACKEND_DOCKER_CONTAINER: web-projects-backend-container
 
 tasks:
-  build:
+  build:dev:
+    desc: "Build Development Docker image"
     cmds:
-      - docker build -t {{.BACKEND_DOCKER_IMAGE}} -f {{.BACKEND_DOCKER_FILE}} .
+      - docker build -t {{.BACKEND_DOCKER_IMAGE}} -f {{.BACKEND_DEV_DOCKER_FILE}} .
+
+  build:prod:
+    desc: "Build Production Docker image"
+    cmds:
+      - docker build -t {{.BACKEND_DOCKER_IMAGE}} -f {{.BACKEND_PROD_DOCKER_FILE}} .
 
   run:
+    desc: "Run Docker container"
     cmds:
       - docker run -d -p 8082:80 --name {{.BACKEND_DOCKER_CONTAINER}} {{.BACKEND_DOCKER_IMAGE}}
 
   stop:
+    desc: "Stop Docker container"
     cmds:
       - docker stop {{.BACKEND_DOCKER_CONTAINER}}
 
   down:
+    desc: "Stop and remove Docker container"
     cmds:
       - docker stop {{.BACKEND_DOCKER_CONTAINER}}
       - docker rm {{.BACKEND_DOCKER_CONTAINER}}
 
   logs:
+    desc: "Show Docker container logs"
     cmds:
       - docker logs -f {{.BACKEND_DOCKER_CONTAINER}}

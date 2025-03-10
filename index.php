@@ -1,3 +1,3 @@
 <?php
-echo "Hello, Docker!asd";
+echo "Hello, Docker!";
 ?>

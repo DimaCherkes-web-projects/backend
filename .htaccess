@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# remove trailing slash
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^/]+)/?$ $1.php [L]
+
+# remove .php
+RewriteCond %{THE_REQUEST} "\.php" [NC]
+RewriteRule ^(.*).php$ %{HTTP:X-Forwarded-Prefix}/$1 [R=301,L]
